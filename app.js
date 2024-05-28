@@ -16,6 +16,12 @@ app.use(express.static('./public'));
 // Definisco le mie rotte
 app.use('/posts', postsRouter);
 
+// Rotta per il create
+app.get('/create', (req, res) => {
+    const filePath = path.join(__dirname, './index.html');
+    res.sendFile(filePath);
+})
+
 app.listen(port, () => {
     console.log(`Server avviato su http://localhost:${port}`);
 });
