@@ -91,12 +91,19 @@ const show = (req, res) => {
 
 // Funzione per il create
 const create = (req, res) => {
-    res.send(`
-    <main>
-        <h1> Creazione nuovo Post </h1>
-    </main>`
-    );
-}
+    res.format({
+        html: () => {
+            res.send(`
+                <main>
+                    <h1> Creazione nuovo Post </h1>
+                </main>
+            `);
+        },
+        default: () => {
+            res.status(406).send('Richiesta non accettata')
+        }
+    });
+};
 
 // Definisco la rotta per il download
 const download = (req, res) => {
