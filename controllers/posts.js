@@ -12,9 +12,7 @@ const index = (req, res) => {
             let html = '<main>';
                 posts.forEach( p => {
 
-                // Uso encodeURIComponent per assicurarmi che tutti i caratteri speciali siano codificati
                 const postSlug = decodeURIComponent(p.slug); //NON FUNZIONA IL LINK
-
 
                     html += `
                         <div>
@@ -27,7 +25,7 @@ const index = (req, res) => {
                     p.tags.forEach(t => html += `<li>${t}</li>`);
                     html += `
                             </ul>
-                            <a href="posts/${postSlug}" Vedi i dettagli di questo Post </a>
+                            <a href="posts/${postSlug}"> Vedi i dettagli di questo Post </a>
                             <hr>
                         </div>
                     `;
@@ -75,7 +73,7 @@ const show = (req, res) => {
                         <p> ${p.content} </p>
                         <p> Ingredienti: </p>
                    ${p.tags.map(t => `<span>${t}</span>`).join(', ')}
-                            <a href="/${encodedSlug}/download">Scarica immagine</a>
+                            <a href="/${encodedSlug}/download"> Scarica immagine </a>
                            <hr>
                        </div>
                     </main>
