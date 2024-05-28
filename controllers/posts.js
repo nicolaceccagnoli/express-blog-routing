@@ -113,15 +113,22 @@ const download = (req, res) => {
     if (postWanted) {
         // Creiamo un parametro che è il nome del file richiesto
         const fileName = req.params.file;
-
+        // Creo il percorso per il download
         const imagePath = path.join(__dirname, `../assets/${postWanted.image}`);
-        res.download(imagePath, err => {
-            if (err) {
-                res.status(500).send('Errore nel download dell\'immagine del Post');
-            } else {
-                res.status(404).send('Post non trovato');
-            }
-        })
+        // Definisco il tipo di estensione del file
+        const extension = path.extname(imagePath);
+
+        if (extension == '.jpeg') {
+            res.download(imagePath, err => {
+                if (err) {
+                    res.status(500).send('Errore nel download dell\'immagine del Post');
+                }
+            });
+        } else {
+            res.status(404).send(`Non hai il permesso di accedere al file: ${extension}`);
+        }
+    } else {
+        res.status(404).send('Post non trovato');
     }
 }
 
