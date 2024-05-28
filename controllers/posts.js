@@ -8,8 +8,14 @@ const index = (req, res) => {
     // Content negotiation
     res.format({
         html: () => {
+
             let html = '<main>';
                 posts.forEach( p => {
+
+                // Uso encodeURIComponent per assicurarmi che tutti i caratteri speciali siano codificati
+                const postSlug = decodeURIComponent(p.slug); //NON FUNZIONA IL LINK
+
+
                     html += `
                         <div>
                             <h2> ${p.title} </h2>
@@ -21,6 +27,7 @@ const index = (req, res) => {
                     p.tags.forEach(t => html += `<li>${t}</li>`);
                     html += `
                             </ul>
+                            <a href="posts/${postSlug}" Vedi i dettagli di questo Post </a>
                             <hr>
                         </div>
                     `;
@@ -44,7 +51,11 @@ const index = (req, res) => {
 const show = (req, res) => {
 
     // Dalla request prendo il parametro dello slug
-    const slugPost = req.params.slug;
+    // const slugPost = req.params.slug;
+
+    // decodeURIComponent decodifica lo slug
+    const slugPost = decodeURIComponent(req.params.slug);
+
     // find() restituisce true quando viene trovato il primo elemento
     // per il quale la funzione restituisce true
     const postWanted = posts.find(p => p.slug === slugPost);
@@ -54,6 +65,8 @@ const show = (req, res) => {
             // Se il post richiesto viene trovato
             if(postWanted) {
                 const p = postWanted;
+                // Uso encodeURIComponent per assicurarmi che tutti i caratteri speciali siano codificati
+                const encodedSlug = encodeURIComponent(p.slug); //NON FUNZIONA IL LINK
                 res.send(
                    `
                     <div>
@@ -62,6 +75,7 @@ const show = (req, res) => {
                         <p> ${p.content} </p>
                         <p> Ingredienti: </p>
                    ${p.tags.map(t => `<span>${t}</span>`).join(', ')}
+                            <a href="/${encodedSlug}/download">Scarica immagine</a>
                            <hr>
                        </div>
                     </main>
@@ -107,7 +121,10 @@ const create = (req, res) => {
 
 // Definisco la rotta per il download
 const download = (req, res) => {
-    const slugPost = req.params.slug;
+    // const slugPost = req.params.slug;
+
+    const slugPost = decodeURIComponent(req.params.slug);
+
     const postWanted = posts.find(p => p.slug === slugPost);
 
     if (postWanted) {
