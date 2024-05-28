@@ -1,43 +1,11 @@
-const { path } = require('../utils');
 const express = require('express');
-
 const router = express.Router();
-let posts = require('../db/posts.json');
 
-router.get('/', (req, res) => {
+// Importo la logica del controller
+const postsController = require('../controllers/posts.js');
 
-    // Content negotiation
-    res.format({
-        html: () => {
-            let html = '<main>';
-                posts.forEach( p => {
-                    html += `
-                        <div>
-                            <h2> ${p.title} </h2>
-                            <img style="width: 200px" src="/${p.image}" alt="${p.title}"/>
-                            <p> ${p.content} </p>
-                            <h6> Ingredienti </h6>
-                            <ul>
-                    `;
-                    p.tags.forEach(t => html += `<li>${t}</li>`);
-                    html += `
-                            </ul>
-                            <hr>
-                        </div>
-                    `;
-                });
-                html += `</main>`;
-                // Inserisco nella risposta l'html
-                res.send(html);
-            },
-            json: () => {
-                res.json({
-                    data: posts,
-                    count: posts.length
-                })
-            }
-    });
-});
+
+router.get('/', postsController.index);
 
 router.get('/:slug', (req, res) => {
     const slugPost = req.params.slug;
@@ -70,7 +38,7 @@ router.get('/:slug', (req, res) => {
             if(postWanted) {
                 res.json({
                     ...postWanted,
-                    image_url: `http://${req.headers.host}/${pizzaRichiesta.image}`
+                    image_url: `http://${req.headers.host}/${postWanted.image}`
                 });
             } else {
                 res.status(404).json({
@@ -80,7 +48,18 @@ router.get('/:slug', (req, res) => {
             }
         }
     })
-}) 
+})
+
+router.post('/create', (req, res) => {
+    res.format({
+        html: () => {
+            res.send(`
+            <main>
+                <h1> Creazione nuovo Post </h1>
+            </main>`);
+        }
+    })
+})
 
 
 module.exports = router
