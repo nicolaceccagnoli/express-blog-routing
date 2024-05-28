@@ -70,10 +70,11 @@ const show = (req, res) => {
                     <div>
                         <h2> ${p.title} </h2>
                         <img style="width: 200px" src="/${p.image}" alt="${p.title}"/>
+                        <br>
+                        <a href="http://localhost:3000/posts/${encodedSlug}/download"> Scarica immagine </a>
                         <p> ${p.content} </p>
                         <p> Ingredienti: </p>
                    ${p.tags.map(t => `<span>${t}</span>`).join(', ')}
-                            <a href="/${encodedSlug}/download"> Scarica immagine </a>
                            <hr>
                        </div>
                     </main>
