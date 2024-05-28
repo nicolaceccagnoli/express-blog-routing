@@ -89,7 +89,6 @@ const show = (req, res) => {
 
 }
 
-
 // Funzione per il create
 const create = (req, res) => {
     res.send(`
@@ -99,9 +98,32 @@ const create = (req, res) => {
     );
 }
 
+// Definisco la rotta per il download
+const download = (req, res) => {
+    const slugPost = req.params.slug;
+    const postWanted = posts.find(p => p.slug === slugPost);
+
+    if (postWanted) {
+        // Creiamo un parametro che è il nome del file richiesto
+        const fileName = req.params.file;
+
+        const imagePath = path.join(__dirname, `../assets/${postWanted.image}`);
+        res.download(imagePath, err => {
+            if (err) {
+                res.status(500).send('Errore nel download dell\'immagine del Post');
+            } else {
+                res.status(404).send('Post non trovato');
+            }
+        })
+    }
+}
+
+
+
 
 module.exports = {
     index, 
     show,
-    create
+    create,
+    download
 }

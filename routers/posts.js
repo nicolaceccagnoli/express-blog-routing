@@ -11,4 +11,7 @@ router.get('/create', postsController.create);
 
 router.get('/:slug', postsController.show);
 
+router.get('/:slug/download', postsController.download);
+
+
 module.exports = router
