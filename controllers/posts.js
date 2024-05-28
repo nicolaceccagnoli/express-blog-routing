@@ -89,7 +89,19 @@ const show = (req, res) => {
 
 }
 
+
+// Funzione per il create
+const create = (req, res) => {
+    res.send(`
+    <main>
+        <h1> Creazione nuovo Post </h1>
+    </main>`
+    );
+}
+
+
 module.exports = {
     index, 
-    show
+    show,
+    create
 }
